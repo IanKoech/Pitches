@@ -4,63 +4,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from . import login_manager
 from datetime import datetime
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-class Movie:
-    '''
-    Movie class to define Movie Objects
-    '''
-
-    def __init__(self,id,title,overview,poster,vote_average,vote_count):
-        self.id =id
-        self.title = title
-        self.overview = overview
-        self.poster = "https://image.tmdb.org/t/p/w500/" + poster
-        self.vote_average = vote_average
-        self.vote_count = vote_count
-
-
-
-class Review(db.Model):
-
-    __tablename__ = 'reviews'
-
-    id = db.Column(db.Integer,primary_key = True)
-    movie_id = db.Column(db.Integer)
-    movie_title = db.Column(db.String)
-    image_path = db.Column(db.String)
-    movie_review = db.Column(db.String)
-    posted = db.Column(db.DateTime,default=datetime.utcnow)
-    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    
-    all_reviews = []
-
-    def __init__(self,movie_id,title,imageurl,review):
-        self.movie_id = movie_id
-        self.title = title
-        self.imageurl = imageurl
-        self.review = review
-
-
-    def save_review(self):
-        Review.all_reviews.append(self)
-        db.session.add(self)
-        db.session.commit()
-
-
-    @classmethod
-    def clear_reviews(cls):
-        Review.all_reviews.clear()
-
-    @classmethod
-    def get_reviews(cls,id):
-
-        reviews = Review.query.filter_by(movie_id=id).all()
-        return reviews
-
-
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
 
@@ -72,8 +15,8 @@ class User(UserMixin,db.Model):
     profile_pic_path = db.Column(db.String())
     password_secure = db.Column(db.String(255))
 
-    #Creating the relationship between user model and review model
-    reviews = db.relationship('Review',backref = 'user',lazy = "dynamic")
+    #Creating the relationship between user model and pitch model
+    pitch = db.relationship('Pitch',backref = 'user',lazy = "dynamic")
     #db.ForeignKey argument tells SQlAlchemy that this is  a foreign key and it is the is the id of a role model
    
 
@@ -89,15 +32,70 @@ class User(UserMixin,db.Model):
     def verify_password(self,password):
         return check_password_hash(self.pass_secure,password)
 
-class Role(db.Model):
-    __tablename__ = 'roles'
+    @login_manager.user_loader
+    def load_user(user_id):
+    return User.query.get(int(user_id)
+
+
+class Pitch(db.Model):
+
+    __tablename__ = 'pitch'
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(255))
+    category = db.Column(db.String(255))
+    timestamp = db.Column(db.DateTime,index=True,default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+    #Creating relationship between user and pitch
+    comment=db.relationship('Comment',backref='',lazy="dynamic")
+    #class methods below
+    def save_pitch(self):
+        '''
+        Function that saves pitches
+        '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_all_pitches(cls):
+        '''
+        Function that queries the databse and returns all the pitches
+        '''
+        return Pitch.query.all()
+
+    @classmethod
+    def get_pitches_by_category(cls,category_id):
+        '''
+        Function that queries the databse and returns pitches based on the
+        category 
+        '''
+        return Pitch.query.filter_by(category_id= category_id)
+
+
+class Comment(db.Model):
+
+    __tablename__ = 'comments'
 
     id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(255))
-    users = db.relationship('User',backref = 'role',lazy="dynamic")
-    #backref allows us to access and set our user class
-    #Lazy parameter is how scqalchemy will load our projects
-    #Lazy option is our objects will be loaded on access and filtered on return 
+    comment= db.Column(db.String)
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitch.id'))
+    username =  db.Column(db.String)
+    votes= db.Column(db.Integer)
 
-    def __repr__(self):
-        return f'User {self.name}'
+    def save_comment(self):
+        '''
+        Function that saves comments
+        '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def clear_comments(cls):
+        Comment.all_comments.clear()
+
+    @classmethod
+    def get_comments(cls,id):
+        comments = Comment.query.filter_by(pitch_id=id).all()
+
+        return comments
