@@ -7,15 +7,24 @@ This is a web application that allows users to sign into their accounts and make
 The author of this project is Ian Koech and can be reached at iankoech9@gmail.com
 
 ### Live link
+https://pitch9.herokuapp.com/
+
 
 ### Set-up and installation
 Copy the repository link
+
 `git clone <repo link> ` on your terminal
+
 Set-up  a virtual environment 
+
 Navigate to the requirements.txt folder to find all flask modules used in the project
+
 `pip install flask-<module name>` on your terminal
+
 Use `chmod a+x <file>` command to make a file exectutable
+
 `./<file>` command to run the application
+
 Application will run on you remote server
 
 #### Technologies Used 
