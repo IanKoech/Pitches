@@ -1,33 +1,43 @@
-{% extends 'base.html'%}
-{% import 'macros.html' as macro%}
+{% extends 'base.html' %}
+<!-- {% import 'macros.html' as macro%} -->
 
-<!--Styles block-->
+<!-- Styles block -->
 {% block styles%}
-    {{super() }}<!--Tells jinja not to override any code that is defined in the block-->
+    {{ super() }}
     <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
-{% endblock%}
-<!--Content block-->
-{% block content%}
-    <div class="container">
-        <form>
-            <input type="text" name="movie_query" placeholder="Search for a movie" class="form-control">
-            <input type="submit" value='Submit' class="btn btn-default">
-        </form>
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-+d4wMJSxEP3vzs2qZBElQRTZMXwgWH15Nyn2K/9XjKiHmh3sBuk1Un/IbcdMcYC4" crossorigin="anonymous"> -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
-    </div>
-    <!--Popular movie-->
-    <h3>Popular Movies</h3>
-    <ul>
-        {{macro.displayMovieList(popular)}}
-    </ul>
-    <!--Upcoming movie-->
-    <h3>Upcoming Movies</h3>
-    <ul>
-        {{macro.displayMovieList(upcoming)}}
-    </ul>
-    <!--Now showing movies-->
-    <h3>Now Showing</h3>
-    <ul>
-        {{macro.displayMovieList(now_playing)}}
-    </ul>
-{% endblock%}
+{% endblock %}
+
+<!-- Content block -->
+{% block content %}
+<body style="background-image: url('static/images/yellow.jpg')">
+<div class="container-fluid">
+
+<div class="jumbotron">
+    <img src="https://res-1.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco/ue1dhtcfoqd3islqtpl3" alt="pitch perfect logo">
+</div>
+
+<h4>Here are some of the pitches from the last few months</h4>
+
+<div class="row">
+<div class="col-md-4">
+    <h4><a href="/tech">Tech Pitches</a></h4>
+    <p>The factory of the future will have only two employees, a man, and a dog. The man will be there to feed the dog. The dog will be there to keep the man from touching the equipment.</p>
+</div>
+
+<div class="col-md-4">
+        <h4><a href="/funny">Funny Pitches</a></h4>
+        <p>That awkward moment when you've said "What?" three times, so you just say "Oh, yeah.." even though you have no idea what they said.</p>
+</div>
+
+<div class="col-md-4">
+        <h4><a href="/life">Life Pitches</a></h4>
+        <p>When life gives you lemons, ask for more. Become a lemon trader. Sell lemons at a lower price than the prevailing market price. Build a company which sells lemons. Become an international lemon selling brand. Have profits in billions. Become rich and keep asking for more lemons.</p>
+</div>
+
+</div>
+</div>
+</body>
+{% endblock %}
