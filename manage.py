@@ -3,7 +3,7 @@ from flask_script import Manager, Server
 from  flask_migrate import Migrate, MigrateCommand
 from app.models import User,Pitch,Comment
 
-app=create_app('production')
+app=create_app('development')
 #Using test config above to test database URI
 
 
