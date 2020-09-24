@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf%}
+
+{% block content %}
+
+{{ wtf.quick_form(form)}}
+{% for pitch in tech %}<br>
+
+<div>
+    <ul>
+            <p>{{pitch.username}}</p>
+            <p>{{pitch.content}}</p>
+            <p>{{pitch.author}}</p>
+            <p>{{pitch.date_posted}}</p>
+    </ul>
+
+</div>
+{% endfor %}
+{% endblock %}
