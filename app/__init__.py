@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 from flask_bootstrap import Bootstrap
 from config import config_options
 from flask_sqlalchemy import SQLAlchemy
@@ -22,7 +23,7 @@ def create_app(config_name):
 
     # Creating the app configurations
     app.config.from_object(config_options[config_name])
-    
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
     # Initializing flask extensions
     bootstrap.init_app(app)

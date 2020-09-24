@@ -6,6 +6,8 @@ class Config:
     
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://ian:iankoech@localhost/pitchers'
     UPLOADED_PHOTOS_DEST ='app/static/photos'
+    
+    SECRET_KEY=os.environ.get('SECRET_KEY')
 
     #email configurations
     #We've set-up SMTP server and configure the port to use the gmail SMTP server port 
